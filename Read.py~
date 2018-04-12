@@ -28,7 +28,7 @@ import requests
 import time
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(40,GPIO.OUT)
-GPIO.setup(36,GPIO.OUT)
+
 
 continue_reading = True
 
@@ -71,14 +71,14 @@ while continue_reading:
  	r = requests.post("https://us-central1-skyviewsuites-717ff.cloudfunctions.net/testPost", data={'card': uid})
         # This is the default key for authentication
         key = [0xFF,0xFF,0xFF,0xFF,0xFF,0xFF]
-        GPIO.output(40,GPIO.LOW)
-        GPIO.output(36,GPIO.LOW)
-	# Select the scanned tag
+        time.sleep(3)
+        # Select the scanned tag
         MIFAREReader.MFRC522_SelectTag(uid)
 
         # Authenticate
         status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
-
+	GPIO.output(40,GPIO.LOW)
+        GPIO.output(36,GPIO.LOW)
         # Check if authenticated
         if status == MIFAREReader.MI_OK:
             MIFAREReader.MFRC522_Read(8)
